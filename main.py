@@ -45,32 +45,13 @@ async def create_upload_file(file: UploadFile = File(...)):
     if not file:
         return {"message": "No upload file sent"}
     else:
-        buffer = BytesIO()
-        buffer.write(open(file, 'rb').read())
-        buffer.seek(0)
-
-        image = Image.open(buffer)
-        print(image)
-        # with open(file, 'b') as f:
-        #     img = Image.open(file)
-        #     object = await file.read()
-        #     img = Image.open(object)
-        #     # im_invert = ImageOps.invert(img)
-        #     # nparr = np.fromstring(file, np.uint8)
-        #     # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        #     # img_not = cv2.bitwise_not(img)
-        #     # _, encoded_img = cv2.imencode('.JPG', img_not)
-        #
-        #     buffer = BytesIO()
-        #     img.save(buffer, format="JPEG")
-        #     img = cv2.imdecode(img, cv2.IMREAD_COLOR)
-        #     img_not = cv2.bitwise_not(img)
-        #     _, encoded_img = cv2.imencode('.JPG', img_not)
-        #     return StreamingResponse(io.BytesIO(encoded_img.tobytes()), media_type="image/jpg")
-        #     # return StreamingResponse(io.BytesIO(img.tobytes()), media_type="image/jpg")
+            file_byted = np.fromstring(file, np.uint8)
+            img = cv2.imdecode(file_byted, cv2.IMREAD_COLOR)
+            img_inverted = cv2.bitwise_not(img)
+            _, encoded_img = cv2.imencode('.JPG', img_inverted)
+            return StreamingResponse(io.BytesIO(encoded_img.tobytes()), media_type="image/jpg")
 
 
-# io.BytesIO(inverted_img.tobytes())
 security = HTTPBasic()
 @app.get("/date")
 def date(credentials: HTTPBasicCredentials = Depends(security)):
