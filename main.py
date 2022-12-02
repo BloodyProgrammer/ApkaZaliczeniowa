@@ -56,12 +56,12 @@ security = HTTPBasic()
 @app.get("/date")
 def date(credentials: HTTPBasicCredentials = Depends(security)):
     current_username_bytes = credentials.username.encode("utf8")
-    correct_username_bytes = b"admin"
+    correct_username_bytes = bytes(os.environ.get("USER"), 'utf-8')
     is_correct_username = secrets.compare_digest(
         current_username_bytes, correct_username_bytes
     )
     current_password_bytes = credentials.password.encode("utf8")
-    correct_password_bytes = b"12345"
+    correct_password_bytes = bytes(os.environ.get("PASSWORD"), 'utf-8')
     is_correct_password = secrets.compare_digest(
         current_password_bytes, correct_password_bytes
     )
