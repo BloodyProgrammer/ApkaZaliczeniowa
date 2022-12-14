@@ -47,8 +47,8 @@ async def create_upload_file(file: UploadFile = File(...)):
             file_byted = np.fromstring(file, np.uint8)
             img = cv2.imdecode(file_byted, cv2.IMREAD_COLOR)
             img_inverted = cv2.bitwise_not(img)
-            _, encoded_img = cv2.imencode('.JPG', img_inverted)
-            return StreamingResponse(io.BytesIO(encoded_img.tobytes()), media_type="image/jpg")
+            _, encoded_img = cv2.imencode('.PNG', img_inverted)
+            return StreamingResponse(io.BytesIO(encoded_img.tobytes()), media_type="image/png")
 
 
 security = HTTPBasic()
