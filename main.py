@@ -39,7 +39,7 @@ async def get_number(number: int):
 
 
 @app.post("/picture/invert")
-async def create_upload_file(file: UploadFile = File(...)):
+async def create_upload_file(file: bytes = File(...)):
 
     if not file:
         return {"message": "No upload file sent"}
